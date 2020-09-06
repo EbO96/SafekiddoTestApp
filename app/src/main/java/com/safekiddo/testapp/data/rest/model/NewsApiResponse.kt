@@ -15,6 +15,6 @@ data class NewsApiResponse(
         @SerializedName("description")
         val description: String?,
 
-        @SerializedName("image_url")
+        @SerializedName("icon")
         val imageUrl: String?
 )
