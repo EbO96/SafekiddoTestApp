@@ -2,37 +2,45 @@ package com.safekiddo.testapp.data
 
 import com.safekiddo.testapp.data.db.dao.NewsDao
 import com.safekiddo.testapp.data.db.entity.News
-import com.safekiddo.testapp.data.mapper.NewsModelMapper
-import com.safekiddo.testapp.data.rest.model.NewsApiResponse
+import com.safekiddo.testapp.data.mapper.ApiResponseNewsToDatabaseNewsMapper
+import com.safekiddo.testapp.data.rest.RestApiResponse
 import com.safekiddo.testapp.data.rest.model.NewsListApiResponse
 import com.safekiddo.testapp.data.rest.service.NewsRestService
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 
-class NewsRepository(private val newsRestService: NewsRestService, private val newsDao: NewsDao) : NewsDao by newsDao {
+class NewsRepository(private val newsRestService: NewsRestService, private val newsDao: NewsDao) : BaseRepository(), NewsDao by newsDao {
 
-    fun getAllNews(): Single<List<News>> {
+    fun getNews(): Single<RestApiResponse<List<News>>> {
+        return getCachedNews()
+                .flatMap {
+                    if (it.isEmpty()) {
+                        getApiNews()
+                    } else {
+                        Single.just(it)
+                    }
+                }
+                .asRestApiResponse()
+                .subscribeOn(Schedulers.io())
+    }
+
+    private fun getCachedNews(): Single<List<News>> {
+        return newsDao.getAllRx()
+    }
+
+    private fun getApiNews(): Single<List<News>> {
         return newsRestService.getAllNews()
                 .toObservable()
                 .map(NewsListApiResponse::news)
                 .flatMapIterable { it }
-                .map(NewsModelMapper::map)
+                .map(ApiResponseNewsToDatabaseNewsMapper::map)
                 .toList()
-                .onErrorResumeNext { getCachedNews() }
-                .flatMap { news ->
-                    if (news.isEmpty()) {
-                        getCachedNews()
-                    } else {
-                        Single.just(news)
-                    }
-                }
-                .subscribeOn(Schedulers.io())
-                .doOnSuccess(newsDao::insert)
+                .doOnSuccess(::cacheNews)
     }
 
-    private fun getCachedNews(): Single<List<News>> {
-        return newsDao.getAllRx().subscribeOn(Schedulers.io())
+    private fun cacheNews(news: List<News>?) {
+        news?.run(newsDao::insert)
     }
 
     fun createNews(news: News): Completable {

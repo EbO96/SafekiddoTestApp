@@ -2,4 +2,6 @@
     <string name="app_name">Safekiddo - Test App</string>
     <string name="news">Wiadomości</string>
     <string name="create_news">Nowa wiadomość</string>
+    <string name="message_cannot_fetch_news">Nie udało się pobrać wiadomości</string>
+    <string name="message_no_internet">Sprawdź połączenie z internetem</string>
 </resources>
