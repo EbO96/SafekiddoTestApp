@@ -28,6 +28,7 @@
         <item name="colorPrimary">@color/brand_purple</item>
         <item name="colorPrimaryVariant">@color/brand_purple_dark</item>
         <item name="colorOnPrimary">@color/brand_on_purple</item>
+        <item name="colorControlNormal">@color/brand_on_purple</item>
     </style>
 
 </resources>

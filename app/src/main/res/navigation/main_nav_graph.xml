@@ -1,11 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav_graph"
     app:startDestination="@id/newsListFragment">
 
     <fragment
         android:id="@+id/newsListFragment"
         android:name="com.safekiddo.testapp.presentation.news.list.NewsListFragment"
-        android:label="@string/news" />
+        android:label="@string/news"
+        tools:layout="@layout/fragment_news_list">
+        <action
+            android:id="@+id/action_newsListFragment_to_newsDetailsFragment"
+            app:destination="@id/newsDetailsFragment" />
+        <action
+            android:id="@+id/action_newsListFragment_to_modifyNewsFragment"
+            app:destination="@id/modifyNewsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newsDetailsFragment"
+        android:name="com.safekiddo.testapp.presentation.news.details.NewsDetailsFragment"
+        android:label=""
+        tools:layout="@layout/fragment_news_details">
+        <argument
+            android:name="newsId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_newsDetailsFragment_to_modifyNewsFragment"
+            app:destination="@id/modifyNewsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/modifyNewsFragment"
+        android:name="com.safekiddo.testapp.presentation.news.details.ModifyNewsFragment"
+        android:label=""
+        tools:layout="@layout/fragment_modify_news" >
+        <action
+            android:id="@+id/action_modifyNewsFragment_to_newsListFragment2"
+            app:destination="@id/newsListFragment"
+            app:popUpTo="@id/newsListFragment" />
+        <action
+            android:id="@+id/action_modifyNewsFragment_to_newsDetailsFragment3"
+            app:destination="@id/newsDetailsFragment"
+            app:popUpTo="@id/newsListFragment" />
+        <argument
+            android:name="newsId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+    </fragment>
 </navigation>
