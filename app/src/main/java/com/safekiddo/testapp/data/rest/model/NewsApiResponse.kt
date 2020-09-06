@@ -1,13 +1,13 @@
-package com.safekiddo.testapp.data.network.model
+package com.safekiddo.testapp.data.rest.model
 
 import com.google.gson.annotations.SerializedName
 
 /**
- * Model used by networking layer. It should be mapped to [Post] entity object.
+ * Model used by networking layer. It should be mapped to [News] entity object.
  */
-data class PostApiResponse(
+data class NewsApiResponse(
         @SerializedName("id")
-        val id: Int?,
+        val id: Long?,
 
         @SerializedName("title")
         val title: String?,

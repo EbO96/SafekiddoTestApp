@@ -1,4 +1,4 @@
-package com.safekiddo.testapp.data
+package com.safekiddo.testapp.data.mapper
 
 /**
  * Base class which implementation maps one model to another.

@@ -4,19 +4,19 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.safekiddo.testapp.data.db.dao.PostDao
-import com.safekiddo.testapp.data.db.entity.Post
+import com.safekiddo.testapp.data.db.dao.NewsDao
+import com.safekiddo.testapp.data.db.entity.News
 
 @Database(
         entities = [
-            Post::class
+            News::class
         ],
         version = 1,
         exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun getPostDao(): PostDao
+    abstract val newsDao: NewsDao
 
     companion object {
 
