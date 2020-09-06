@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Safekiddo - Test App</string>
+    <string name="news">Wiadomości</string>
+    <string name="create_news">Nowa wiadomość</string>
 </resources>
