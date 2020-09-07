@@ -50,6 +50,7 @@ class NewsListFragment : BaseFragment(R.layout.fragment_news_list), NewsListRecy
     }
 
     override fun onItemClick(item: NewsItem) {
+        // TODO add transition between screens (shared elements)
         NewsListFragmentDirections.actionNewsListFragmentToNewsDetailsFragment(item.newsId).navigate()
     }
 

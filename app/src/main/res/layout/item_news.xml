@@ -35,7 +35,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/item_news_description_text_view"
-            style="@style/TextAppearance.MaterialComponents.Body2"
+            style="@style/TextAppearance.MaterialComponents.Body2.CardViewSubtitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
