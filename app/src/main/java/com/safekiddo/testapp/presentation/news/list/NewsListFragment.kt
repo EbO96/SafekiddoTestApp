@@ -11,7 +11,7 @@ import com.safekiddo.testapp.presentation.view.JustSpaceItemDivider
 import kotlinx.android.synthetic.main.fragment_news_list.*
 import javax.inject.Inject
 
-class NewsListFragment : BaseFragment(R.layout.fragment_news_list) {
+class NewsListFragment : BaseFragment(R.layout.fragment_news_list), NewsListRecyclerAdapter.Listener {
 
     @Inject
     lateinit var viewModel: NewsListViewModel
@@ -36,18 +36,21 @@ class NewsListFragment : BaseFragment(R.layout.fragment_news_list) {
     private fun setViews() {
         fragment_news_list_swipe_refresh_layout.setOnRefreshListener(viewModel::refresh)
 
-        newsListRecyclerAdapter = NewsListRecyclerAdapter()
+        newsListRecyclerAdapter = NewsListRecyclerAdapter(this)
         fragment_news_list_recycler_view.apply {
             adapter = newsListRecyclerAdapter
             addItemDecoration(JustSpaceItemDivider(requireContext(), R.dimen.padding_big))
         }
     }
 
-
     private fun setListeners() {
         fragment_news_list_create_news_button.setOnClickListener {
             NewsListFragmentDirections.actionNewsListFragmentToModifyNewsFragment().navigate()
         }
+    }
+
+    override fun onItemClick(item: NewsItem) {
+        NewsListFragmentDirections.actionNewsListFragmentToNewsDetailsFragment(item.newsId).navigate()
     }
 
     private fun setObservers() {
