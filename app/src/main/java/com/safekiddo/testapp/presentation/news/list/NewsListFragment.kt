@@ -7,6 +7,7 @@ import com.safekiddo.testapp.R
 import com.safekiddo.testapp.data.rest.RestApiResponse
 import com.safekiddo.testapp.di.Di
 import com.safekiddo.testapp.presentation.BaseFragment
+import com.safekiddo.testapp.presentation.view.JustSpaceItemDivider
 import kotlinx.android.synthetic.main.fragment_news_list.*
 import javax.inject.Inject
 
@@ -14,6 +15,8 @@ class NewsListFragment : BaseFragment(R.layout.fragment_news_list) {
 
     @Inject
     lateinit var viewModel: NewsListViewModel
+
+    private lateinit var newsListRecyclerAdapter: NewsListRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Di.applicationComponent
@@ -32,6 +35,12 @@ class NewsListFragment : BaseFragment(R.layout.fragment_news_list) {
 
     private fun setViews() {
         fragment_news_list_swipe_refresh_layout.setOnRefreshListener(viewModel::refresh)
+
+        newsListRecyclerAdapter = NewsListRecyclerAdapter()
+        fragment_news_list_recycler_view.apply {
+            adapter = newsListRecyclerAdapter
+            addItemDecoration(JustSpaceItemDivider(requireContext(), R.dimen.padding_big))
+        }
     }
 
 
@@ -49,7 +58,7 @@ class NewsListFragment : BaseFragment(R.layout.fragment_news_list) {
         viewModel.error.observe(viewLifecycleOwner, ::showError)
 
         viewModel.newsList.observe(viewLifecycleOwner) {
-            it
+            newsListRecyclerAdapter.submitList(it)
         }
     }
 

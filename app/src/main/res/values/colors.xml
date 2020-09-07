@@ -15,4 +15,5 @@
     <color name="color_on_surface">#000000</color>
     <color name="color_error">#E00B32</color>
     <color name="color_on_error">#F7F7F2</color>
+    <color name="placeholder_image_color">#BDBDBD</color>
 </resources>

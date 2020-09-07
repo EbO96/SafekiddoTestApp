@@ -17,6 +17,7 @@
         <item name="colorOnError">@color/color_on_error</item>
 
         <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
+        <item name="materialCardViewStyle">@style/Widget.MaterialComponents.CardView.Custom</item>
     </style>
 
     <style name="Widget.App.Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
@@ -29,6 +30,10 @@
         <item name="colorPrimaryVariant">@color/brand_purple_dark</item>
         <item name="colorOnPrimary">@color/brand_on_purple</item>
         <item name="colorControlNormal">@color/brand_on_purple</item>
+    </style>
+
+    <style name="Widget.MaterialComponents.CardView.Custom" parent="Widget.MaterialComponents.CardView">
+        <item name="cardElevation">8dp</item>
     </style>
 
 </resources>

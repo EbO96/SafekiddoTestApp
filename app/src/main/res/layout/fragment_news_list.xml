@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -12,11 +13,12 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fragment_news_list_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:clipToPadding="false"
             android:orientation="vertical"
             android:padding="@dimen/padding_normal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_news" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -24,11 +26,13 @@
         android:id="@+id/fragment_news_list_create_news_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:text="@string/create_news"
         app:icon="@drawable/ic_add"
-        app:iconTint="@color/brand_on_mint" />
+        app:iconTint="@color/brand_on_mint"
+        app:layout_anchor="@id/fragment_news_list_recycler_view"
+        app:layout_anchorGravity="bottom|end"
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
