@@ -35,7 +35,6 @@ class NewsListViewModel(private val newsRepository: NewsRepository) : BaseViewMo
 
     fun refresh() {
         newsRepository.getNews()
-                .delay(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { _isLoading.value = true }
                 .doAfterTerminate { _isLoading.value = false }
