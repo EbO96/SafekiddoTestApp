@@ -10,16 +10,24 @@ import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import com.bumptech.glide.Glide
 import com.safekiddo.testapp.R
+import com.safekiddo.testapp.di.Di
 import com.safekiddo.testapp.presentation.BaseFragment
 import com.safekiddo.testapp.presentation.news.list.NewsListFragment
 import kotlinx.android.synthetic.main.fragment_news_details.*
+import javax.inject.Inject
 
 class NewsDetailsFragment : BaseFragment(contentLayoutId = R.layout.fragment_news_details, menuResId = R.menu.menu_news_details) {
 
+    @Inject
+    lateinit var newsDetailsViewModel: NewsDetailsViewModel
     private val args by navArgs<NewsDetailsFragmentArgs>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+        Di.applicationComponent
+                .getNewsDetailsComponentFactory()
+                .create(args.news.newsId, this)
+                .inject(this)
         super.onCreate(savedInstanceState)
     }
 
