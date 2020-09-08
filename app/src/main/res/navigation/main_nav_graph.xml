@@ -31,8 +31,8 @@
         app:popExitAnim="@anim/nav_default_pop_exit_anim"
         tools:layout="@layout/fragment_news_details">
         <argument
-            android:name="newsId"
-            app:argType="long" />
+            android:name="news"
+            app:argType="com.safekiddo.testapp.presentation.news.list.NewsItem" />
         <action
             android:id="@+id/action_newsDetailsFragment_to_modifyNewsFragment"
             app:destination="@id/modifyNewsFragment" />

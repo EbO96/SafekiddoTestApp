@@ -33,42 +33,54 @@ class NewsListRecyclerAdapter(private val listener: Listener) : ListAdapter<News
         fun bind(news: NewsItem) {
             itemView
                     .apply {
-                        Glide.with(this)
-                                .load(news.imageUrl)
-                                .placeholder(R.drawable.ic_image_placeholder)
-                                .error(R.drawable.ic_broken_image_placeholder)
-                                .addListener(object : RequestListener<Drawable> {
-                                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                                        item_news_image_image_view.scaleType = ImageView.ScaleType.FIT_CENTER
-                                        return false
-                                    }
+                        item_news_image_image_view.apply {
+                            transitionName = NewsListFragment.SharedElements.getNewsImageTransitionName(news.newsId)
+                            Glide.with(this)
+                                    .load(news.imageUrl)
+                                    .placeholder(R.drawable.ic_image_placeholder)
+                                    .error(R.drawable.ic_broken_image_placeholder)
+                                    .addListener(object : RequestListener<Drawable> {
+                                        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                                            item_news_image_image_view.scaleType = ImageView.ScaleType.FIT_CENTER
+                                            return false
+                                        }
 
-                                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                                        item_news_image_image_view.scaleType = ImageView.ScaleType.CENTER_CROP
-                                        return false
-                                    }
+                                        override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                                            item_news_image_image_view.scaleType = ImageView.ScaleType.CENTER_CROP
+                                            return false
+                                        }
 
-                                })
-                                .into(item_news_image_image_view)
+                                    })
+                                    .into(this)
+                        }
+
 
                         item_news_title_text_view.apply {
+                            transitionName = NewsListFragment.SharedElements.getNewsTitleTransitionName(news.newsId)
                             isVisible = news.title.isNotBlank()
                             text = news.title
                         }
 
                         item_news_description_text_view.apply {
+                            transitionName = NewsListFragment.SharedElements.getNewsDescriptionTransitionName(news.newsId)
                             isVisible = news.description.isNotBlank()
                             text = news.description
                         }
-                    }
-                    .setOnClickListener {
-                        listener.onItemClick(news)
+
+                        setOnClickListener {
+                            val extras = mapOf<View, String>(
+                                    item_news_image_image_view to NewsListFragment.SharedElements.getNewsImageTransitionName(news.newsId),
+                                    item_news_title_text_view to NewsListFragment.SharedElements.getNewsTitleTransitionName(news.newsId),
+                                    item_news_description_text_view to NewsListFragment.SharedElements.getNewsDescriptionTransitionName(news.newsId)
+                            )
+                            listener.onItemClick(news, extras)
+                        }
                     }
         }
     }
 
     interface Listener {
-        fun onItemClick(item: NewsItem)
+        fun onItemClick(item: NewsItem, transitionExtras: Map<View, String>)
     }
 
     companion object {

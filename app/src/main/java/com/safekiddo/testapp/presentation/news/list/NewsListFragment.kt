@@ -3,6 +3,7 @@ package com.safekiddo.testapp.presentation.news.list
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.navigation.fragment.FragmentNavigator
 import com.safekiddo.testapp.R
 import com.safekiddo.testapp.data.rest.RestApiResponse
 import com.safekiddo.testapp.di.Di
@@ -40,6 +41,11 @@ class NewsListFragment : BaseFragment(R.layout.fragment_news_list), NewsListRecy
         fragment_news_list_recycler_view.apply {
             adapter = newsListRecyclerAdapter
             addItemDecoration(JustSpaceItemDivider(requireContext(), R.dimen.padding_big))
+            postponeEnterTransition()
+            viewTreeObserver.addOnPreDrawListener {
+                startPostponedEnterTransition()
+                true
+            }
         }
     }
 
@@ -49,9 +55,16 @@ class NewsListFragment : BaseFragment(R.layout.fragment_news_list), NewsListRecy
         }
     }
 
-    override fun onItemClick(item: NewsItem) {
-        // TODO add transition between screens (shared elements)
-        NewsListFragmentDirections.actionNewsListFragmentToNewsDetailsFragment(item.newsId).navigate()
+    override fun onItemClick(item: NewsItem, transitionExtras: Map<View, String>) {
+        navigateToNewsDetails(item, transitionExtras)
+    }
+
+    private fun navigateToNewsDetails(news: NewsItem, transitionExtras: Map<View, String>) {
+        val extras = FragmentNavigator.Extras.Builder()
+                .addSharedElements(transitionExtras)
+                .build()
+
+        NewsListFragmentDirections.actionNewsListFragmentToNewsDetailsFragment(news).navigate(extras)
     }
 
     private fun setObservers() {
@@ -72,5 +85,13 @@ class NewsListFragment : BaseFragment(R.layout.fragment_news_list), NewsListRecy
             RestApiResponse.Error.ErrorType.NoInternetConnection -> R.string.message_no_internet
         }
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+    }
+
+    object SharedElements {
+        fun getNewsImageTransitionName(newsId: Long) = "newsImage$newsId"
+
+        fun getNewsTitleTransitionName(newsId: Long) = "newsTitle${newsId}"
+
+        fun getNewsDescriptionTransitionName(newsId: Long) = "newsDescription${newsId}"
     }
 }
