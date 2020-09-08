@@ -5,7 +5,8 @@ import com.safekiddo.testapp.di.data.DataModule
 import com.safekiddo.testapp.di.data.db.DatabaseModule
 import com.safekiddo.testapp.di.data.rest.BaseRestModule
 import com.safekiddo.testapp.di.data.rest.NewsRestModule
-import com.safekiddo.testapp.di.presentation.news.NewsListComponent
+import com.safekiddo.testapp.di.presentation.news.details.NewsDetailsComponent
+import com.safekiddo.testapp.di.presentation.news.list.NewsListComponent
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -23,6 +24,8 @@ import javax.inject.Singleton
 interface ApplicationComponent {
 
     fun getNewsListComponentFactory(): NewsListComponent.Factory
+
+    fun getNewsDetailsComponentFactory(): NewsDetailsComponent.Factory
 
     @Component.Factory
     interface Factory {

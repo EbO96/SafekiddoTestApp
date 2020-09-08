@@ -12,7 +12,7 @@ import io.reactivex.schedulers.Schedulers
 
 class NewsRepository(private val newsRestService: NewsRestService, private val newsDao: NewsDao) : BaseRepository(), NewsDao by newsDao {
 
-    fun getNews(): Single<RestApiResponse<List<News>>> {
+    fun getAllNews(): Single<RestApiResponse<List<News>>> {
         return getCachedNews()
                 .flatMap {
                     if (it.isEmpty()) {

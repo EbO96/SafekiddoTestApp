@@ -11,7 +11,6 @@ import com.safekiddo.testapp.data.rest.RestApiResponse
 import com.safekiddo.testapp.presentation.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class NewsListViewModel(private val newsRepository: NewsRepository) : BaseViewModel() {
@@ -34,7 +33,7 @@ class NewsListViewModel(private val newsRepository: NewsRepository) : BaseViewMo
     }
 
     fun refresh() {
-        newsRepository.getNews()
+        newsRepository.getAllNews()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { _isLoading.value = true }
                 .doAfterTerminate { _isLoading.value = false }

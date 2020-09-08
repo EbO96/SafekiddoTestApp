@@ -1,4 +1,4 @@
-package com.safekiddo.testapp.di.presentation.news
+package com.safekiddo.testapp.di.presentation.news.list
 
 import com.safekiddo.testapp.presentation.news.list.NewsListFragment
 import dagger.BindsInstance

@@ -10,4 +10,7 @@ interface NewsDao : BaseDao<News> {
 
     @Query("SELECT * FROM news")
     fun getAllRx(): Single<List<News>>
+
+    @Query("SELECT * FROM news WHERE id = :newsId")
+    fun getByIdRx(newsId: Long): Single<News>
 }

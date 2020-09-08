@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_news_list">
         <action
             android:id="@+id/action_newsListFragment_to_newsDetailsFragment"
-            app:destination="@id/newsDetailsFragment" />
+            app:destination="@id/newsDetailsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_newsListFragment_to_modifyNewsFragment"
             app:destination="@id/modifyNewsFragment" />
@@ -20,7 +24,11 @@
     <fragment
         android:id="@+id/newsDetailsFragment"
         android:name="com.safekiddo.testapp.presentation.news.details.NewsDetailsFragment"
-        android:label=""
+        android:label="@string/news_details"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim"
         tools:layout="@layout/fragment_news_details">
         <argument
             android:name="newsId"
@@ -33,7 +41,11 @@
         android:id="@+id/modifyNewsFragment"
         android:name="com.safekiddo.testapp.presentation.news.details.ModifyNewsFragment"
         android:label=""
-        tools:layout="@layout/fragment_modify_news" >
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim"
+        tools:layout="@layout/fragment_modify_news">
         <action
             android:id="@+id/action_modifyNewsFragment_to_newsListFragment2"
             app:destination="@id/newsListFragment"
@@ -44,7 +56,7 @@
             app:popUpTo="@id/newsListFragment" />
         <argument
             android:name="newsId"
-            app:argType="long"
-            android:defaultValue="-1L" />
+            android:defaultValue="-1L"
+            app:argType="long" />
     </fragment>
 </navigation>
