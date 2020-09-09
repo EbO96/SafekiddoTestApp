@@ -31,5 +31,13 @@
             android:name="news"
             app:argType="com.safekiddo.testapp.presentation.news.list.NewsItem"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_newsDetailsFragment_to_changeNewsPhotoDialog"
+            app:destination="@id/changeNewsPhotoDialog" />
     </fragment>
+    <dialog
+        android:id="@+id/changeNewsPhotoDialog"
+        android:name="com.safekiddo.testapp.presentation.news.details.ChangeNewsPhotoDialog"
+        android:label="ChangeNewsPhotoDialog"
+        tools:layout="@layout/dialog_change_news_photo" />
 </navigation>

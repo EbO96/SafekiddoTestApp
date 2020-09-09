@@ -14,7 +14,7 @@
             app:showAsAction="ifRoom" />
 
         <item
-            android:id="@+id/menu_news_details_add_photo"
+            android:id="@+id/menu_news_details_change_photo"
             android:icon="@drawable/ic_add_photo"
             android:title="@string/label_save"
             app:showAsAction="ifRoom" />

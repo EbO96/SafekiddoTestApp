@@ -125,6 +125,7 @@ class NewsDetailsFragment : BaseFragment(contentLayoutId = R.layout.fragment_new
                     description = fragment_news_details_description_edit_text.textOrBlank()
             )
             R.id.menu_news_details_delete -> deleteNews()
+            R.id.menu_news_details_change_photo -> NewsDetailsFragmentDirections.actionNewsDetailsFragmentToChangeNewsPhotoDialog().navigate()
         }
         return super.onOptionsItemSelected(item)
     }

@@ -6,7 +6,6 @@ import com.safekiddo.testapp.data.mapper.ApiResponseNewsToDatabaseNewsMapper
 import com.safekiddo.testapp.data.rest.LoadState
 import com.safekiddo.testapp.data.rest.model.NewsListApiResponse
 import com.safekiddo.testapp.data.rest.service.NewsRestService
-import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 
@@ -42,13 +41,5 @@ class NewsRepository(private val newsRestService: NewsRestService, private val n
 
     private fun cacheNews(news: List<News>?) {
         news?.run(newsDao::insert)
-    }
-
-    fun createNews(news: News): Completable {
-        return newsDao.insertRx(news).subscribeOn(Schedulers.io())
-    }
-
-    fun updateNews(news: News): Completable {
-        return newsDao.updateRx(news).subscribeOn(Schedulers.io())
     }
 }

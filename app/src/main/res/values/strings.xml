@@ -18,4 +18,7 @@
     <string name="delete">Usuń</string>
     <string name="cancel">Anuluj</string>
     <string name="message_deleted">Usunięto</string>
+    <string name="title_from_gallery">Z galerii</string>
+    <string name="title_take_picture">Zrób zdjęcie</string>
+    <string name="title_change_photo">Zmień zdjęcie</string>
 </resources>
