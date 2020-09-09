@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.navigation.fragment.FragmentNavigator
 import com.safekiddo.testapp.R
-import com.safekiddo.testapp.data.rest.RestApiResponse
+import com.safekiddo.testapp.data.rest.LoadState
 import com.safekiddo.testapp.di.Di
 import com.safekiddo.testapp.presentation.BaseFragment
 import com.safekiddo.testapp.presentation.view.JustSpaceItemDivider
@@ -35,7 +35,7 @@ class NewsListFragment : BaseFragment(R.layout.fragment_news_list), NewsListRecy
     }
 
     private fun setViews() {
-        fragment_news_list_swipe_refresh_layout.setOnRefreshListener(viewModel::refresh)
+        fragment_news_list_swipe_refresh_layout.setOnRefreshListener(viewModel::load)
 
         newsListRecyclerAdapter = NewsListRecyclerAdapter(this)
         fragment_news_list_recycler_view.apply {
@@ -51,7 +51,7 @@ class NewsListFragment : BaseFragment(R.layout.fragment_news_list), NewsListRecy
 
     private fun setListeners() {
         fragment_news_list_create_news_button.setOnClickListener {
-            NewsListFragmentDirections.actionNewsListFragmentToModifyNewsFragment().navigate()
+            NewsListFragmentDirections.actionNewsListFragmentToNewsDetailsFragment(null).navigate()
         }
     }
 
@@ -79,19 +79,19 @@ class NewsListFragment : BaseFragment(R.layout.fragment_news_list), NewsListRecy
         }
     }
 
-    private fun showError(type: RestApiResponse.Error.ErrorType) {
+    private fun showError(type: LoadState.Error.ErrorType) {
         val message = when (type) {
-            RestApiResponse.Error.ErrorType.Unknown -> R.string.message_cannot_fetch_news
-            RestApiResponse.Error.ErrorType.NoInternetConnection -> R.string.message_no_internet
+            is LoadState.Error.ErrorType.Unknown -> R.string.message_cannot_fetch_news
+            LoadState.Error.ErrorType.NoInternetConnection -> R.string.message_no_internet
         }
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
     object SharedElements {
-        fun getNewsImageTransitionName(newsId: Long) = "newsImage$newsId"
+        fun getNewsImageTransitionName(newsId: Long?) = newsId?.let { "newsImage${it}" } ?: ""
 
-        fun getNewsTitleTransitionName(newsId: Long) = "newsTitle${newsId}"
+        fun getNewsTitleTransitionName(newsId: Long?) = newsId?.let { "newsTitle${it}" } ?: ""
 
-        fun getNewsDescriptionTransitionName(newsId: Long) = "newsDescription${newsId}"
+        fun getNewsDescriptionTransitionName(newsId: Long?) = newsId?.let { "newsDescription${it}" } ?: ""
     }
 }

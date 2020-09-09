@@ -4,17 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <group
-        android:id="@+id/menu_news_edit_group"
+        android:id="@+id/menu_news_details_edit_group"
         android:visible="false"
         tools:visible="true">
         <item
-            android:id="@+id/menu_news_details_delete"
+            android:id="@+id/menu_news_details_details_delete"
             android:icon="@drawable/ic_delete"
             android:title="@string/label_delete"
             app:showAsAction="ifRoom" />
 
         <item
-            android:id="@+id/menu_news_apply_changes"
+            android:id="@+id/menu_news_details_add_photo"
+            android:icon="@drawable/ic_add_photo"
+            android:title="@string/label_save"
+            app:showAsAction="ifRoom" />
+
+        <item
+            android:id="@+id/menu_news_details_apply_changes"
             android:icon="@drawable/ic_done"
             android:title="@string/label_save"
             app:showAsAction="ifRoom" />

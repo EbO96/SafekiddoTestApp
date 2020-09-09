@@ -1,19 +1,20 @@
 package com.safekiddo.testapp.data
 
-import com.safekiddo.testapp.data.rest.RestApiResponse
+import com.safekiddo.testapp.data.rest.LoadState
+import io.reactivex.Observable
 import io.reactivex.Single
 import java.net.UnknownHostException
 
 abstract class BaseRepository {
 
-    fun <T : Any> Single<T>.asRestApiResponse(): Single<RestApiResponse<T>> {
-        return this.map<RestApiResponse<T>> { RestApiResponse.Success(it) }
+    fun <T : Any> Observable<T>.asLoadState(): Observable<LoadState<T>> {
+        return this.map<LoadState<T>> { LoadState.Success(it) }
                 .onErrorReturn {
                     val type = when (it) {
-                        is UnknownHostException -> RestApiResponse.Error.ErrorType.NoInternetConnection
-                        else -> RestApiResponse.Error.ErrorType.Unknown
+                        is UnknownHostException -> LoadState.Error.ErrorType.NoInternetConnection
+                        else -> LoadState.Error.ErrorType.Unknown(it)
                     }
-                    RestApiResponse.Error(type)
+                    LoadState.Error(type)
                 }
     }
 }

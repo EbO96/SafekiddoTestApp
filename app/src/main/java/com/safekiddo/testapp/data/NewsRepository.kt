@@ -3,40 +3,41 @@ package com.safekiddo.testapp.data
 import com.safekiddo.testapp.data.db.dao.NewsDao
 import com.safekiddo.testapp.data.db.entity.News
 import com.safekiddo.testapp.data.mapper.ApiResponseNewsToDatabaseNewsMapper
-import com.safekiddo.testapp.data.rest.RestApiResponse
+import com.safekiddo.testapp.data.rest.LoadState
 import com.safekiddo.testapp.data.rest.model.NewsListApiResponse
 import com.safekiddo.testapp.data.rest.service.NewsRestService
 import io.reactivex.Completable
-import io.reactivex.Single
+import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 
 class NewsRepository(private val newsRestService: NewsRestService, private val newsDao: NewsDao) : BaseRepository(), NewsDao by newsDao {
 
-    fun getAllNews(): Single<RestApiResponse<List<News>>> {
+    fun observeAllNews(refresh: Boolean): Observable<LoadState<List<News>>> {
         return getCachedNews()
                 .flatMap {
-                    if (it.isEmpty()) {
+                    if (refresh || it.isEmpty()) {
                         getApiNews()
                     } else {
-                        Single.just(it)
+                        Observable.just(it)
                     }
                 }
-                .asRestApiResponse()
+                .asLoadState()
                 .subscribeOn(Schedulers.io())
     }
 
-    private fun getCachedNews(): Single<List<News>> {
-        return newsDao.getAllRx()
+    private fun getCachedNews(): Observable<List<News>> {
+        return newsDao.observeAllRx()
     }
 
-    private fun getApiNews(): Single<List<News>> {
+    private fun getApiNews(): Observable<List<News>> {
+        val currentTime = System.currentTimeMillis()
         return newsRestService.getAllNews()
-                .toObservable()
                 .map(NewsListApiResponse::news)
                 .flatMapIterable { it }
-                .map(ApiResponseNewsToDatabaseNewsMapper::map)
+                .map { ApiResponseNewsToDatabaseNewsMapper.map(it, currentTime) }
                 .toList()
                 .doOnSuccess(::cacheNews)
+                .toObservable()
     }
 
     private fun cacheNews(news: List<News>?) {

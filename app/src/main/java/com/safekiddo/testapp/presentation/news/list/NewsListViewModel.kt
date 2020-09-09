@@ -7,10 +7,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.hadilq.liveevent.LiveEvent
 import com.safekiddo.testapp.data.NewsRepository
 import com.safekiddo.testapp.data.mapper.DatabaseNewsToNewsItemMapper
-import com.safekiddo.testapp.data.rest.RestApiResponse
+import com.safekiddo.testapp.data.rest.LoadState
 import com.safekiddo.testapp.presentation.BaseViewModel
+import io.reactivex.BackpressureStrategy
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
 class NewsListViewModel(private val newsRepository: NewsRepository) : BaseViewModel() {
@@ -23,29 +24,36 @@ class NewsListViewModel(private val newsRepository: NewsRepository) : BaseViewMo
 
     val isLoading: LiveData<Boolean>
         get() = _isLoading
-    private val _error = LiveEvent<RestApiResponse.Error.ErrorType>()
+    private val _error = LiveEvent<LoadState.Error.ErrorType>()
 
-    val error: LiveData<RestApiResponse.Error.ErrorType>
+    val error: LiveData<LoadState.Error.ErrorType>
         get() = _error
 
-    init {
-        refresh()
-    }
+    private val refreshPublishSubject = BehaviorSubject.create<Boolean>()
 
-    fun refresh() {
-        newsRepository.getAllNews()
+    init {
+        load()
+        refreshPublishSubject
+                .toFlowable(BackpressureStrategy.LATEST)
+                .toObservable()
+                .flatMap(newsRepository::observeAllNews)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { _isLoading.value = true }
-                .doAfterTerminate { _isLoading.value = false }
-                .observeOn(Schedulers.computation())
-                .doOnSuccess {
+                .doOnEach {
+                    _isLoading.value = !(it.isOnComplete || it.isOnError || it.isOnNext)
+                }
+                .doOnNext {
                     when (it) {
-                        is RestApiResponse.Success -> _newsList.postValue(it.data.map(DatabaseNewsToNewsItemMapper::map))
-                        is RestApiResponse.Error -> _error.postValue(it.type)
+                        is LoadState.Success -> _newsList.postValue(it.data.map(DatabaseNewsToNewsItemMapper::map))
+                        is LoadState.Error -> _error.postValue(it.type)
                     }
                 }
                 .subscribe()
                 .addToDisposables()
+    }
+
+    fun load(refresh: Boolean = true) {
+        refreshPublishSubject.onNext(refresh)
     }
 
     class Factory @Inject constructor(private val newsRepository: NewsRepository) : ViewModelProvider.Factory {

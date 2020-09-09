@@ -18,28 +18,33 @@ data class News(
         val description: String,
 
         @ColumnInfo(name = "image_url")
-        val imageUrl: String?
+        val imageUrl: String?,
+
+        @ColumnInfo(name = "modification_date")
+        val modificationDate: Long
 ) {
 
     object Factory {
 
         private fun generateId() = System.nanoTime()
 
-        fun create(title: String, description: String, id: Long? = null): News {
+        fun create(id: Long?, title: String, description: String, imageUrl: String?, modificationDate: Long): News {
             return News(
                     id = id ?: generateId(),
                     title = title,
                     description = description,
-                    imageUrl = null
+                    imageUrl = imageUrl,
+                    modificationDate = modificationDate
             )
         }
 
-        fun create(newsApiResponse: NewsApiResponse): News {
+        fun create(newsApiResponse: NewsApiResponse, modificationDate: Long): News {
             return News(
                     id = newsApiResponse.id ?: generateId(),
                     title = newsApiResponse.title ?: "",
                     description = newsApiResponse.description ?: "",
-                    imageUrl = newsApiResponse.imageUrl
+                    imageUrl = newsApiResponse.imageUrl,
+                    modificationDate = modificationDate
             )
         }
     }

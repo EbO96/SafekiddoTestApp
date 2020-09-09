@@ -1,6 +1,7 @@
 package com.safekiddo.testapp.di.presentation.news.details
 
 import com.safekiddo.testapp.presentation.news.details.NewsDetailsFragment
+import com.safekiddo.testapp.presentation.news.list.NewsItem
 import dagger.BindsInstance
 import dagger.Subcomponent
 
@@ -15,6 +16,6 @@ interface NewsDetailsComponent {
 
     @Subcomponent.Factory
     interface Factory {
-        fun create(@BindsInstance newsId: Long, @BindsInstance newsDetailsFragment: NewsDetailsFragment): NewsDetailsComponent
+        fun create(@BindsInstance news: NewsItem?, @BindsInstance newsDetailsFragment: NewsDetailsFragment): NewsDetailsComponent
     }
 }

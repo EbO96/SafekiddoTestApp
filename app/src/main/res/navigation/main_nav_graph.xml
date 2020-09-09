@@ -17,9 +17,6 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-        <action
-            android:id="@+id/action_newsListFragment_to_modifyNewsFragment"
-            app:destination="@id/modifyNewsFragment" />
     </fragment>
     <fragment
         android:id="@+id/newsDetailsFragment"
@@ -32,31 +29,7 @@
         tools:layout="@layout/fragment_news_details">
         <argument
             android:name="news"
-            app:argType="com.safekiddo.testapp.presentation.news.list.NewsItem" />
-        <action
-            android:id="@+id/action_newsDetailsFragment_to_modifyNewsFragment"
-            app:destination="@id/modifyNewsFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/modifyNewsFragment"
-        android:name="com.safekiddo.testapp.presentation.news.details.ModifyNewsFragment"
-        android:label=""
-        app:enterAnim="@anim/nav_default_enter_anim"
-        app:exitAnim="@anim/nav_default_exit_anim"
-        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-        app:popExitAnim="@anim/nav_default_pop_exit_anim"
-        tools:layout="@layout/fragment_modify_news">
-        <action
-            android:id="@+id/action_modifyNewsFragment_to_newsListFragment2"
-            app:destination="@id/newsListFragment"
-            app:popUpTo="@id/newsListFragment" />
-        <action
-            android:id="@+id/action_modifyNewsFragment_to_newsDetailsFragment3"
-            app:destination="@id/newsDetailsFragment"
-            app:popUpTo="@id/newsListFragment" />
-        <argument
-            android:name="newsId"
-            android:defaultValue="-1L"
-            app:argType="long" />
+            app:argType="com.safekiddo.testapp.presentation.news.list.NewsItem"
+            app:nullable="true" />
     </fragment>
 </navigation>
