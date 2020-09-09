@@ -27,21 +27,23 @@
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@+id/fragment_news_details_image_image_view">
 
-            <com.google.android.material.textview.MaterialTextView
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/fragment_news_details_title_text_view"
-                style="@style/TextAppearance.MaterialComponents.Headline6"
+                style="@style/Widget.AppCompat.EditText.LikeTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/padding_normal"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 tools:maxLines="5"
                 tools:text="@tools:sample/lorem/random" />
 
-            <com.google.android.material.textview.MaterialTextView
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/fragment_news_details_description_text_view"
-                style="@style/TextAppearance.MaterialComponents.Body1"
+                style="@style/Widget.AppCompat.EditText.LikeTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/padding_normal"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 tools:maxLines="25"
                 tools:text="@tools:sample/lorem/random" />
 

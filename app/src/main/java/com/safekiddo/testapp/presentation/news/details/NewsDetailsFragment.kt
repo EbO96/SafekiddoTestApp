@@ -58,7 +58,7 @@ class NewsDetailsFragment : BaseFragment(contentLayoutId = R.layout.fragment_new
 
         fragment_news_details_description_text_view.transitionName = NewsListFragment.SharedElements.getNewsDescriptionTransitionName(args.news.newsId)
         // Set description
-        fragment_news_details_description_text_view.text = args.news.description
+        fragment_news_details_description_text_view.setText(args.news.description)
 
         fragment_news_details_image_image_view.transitionName = NewsListFragment.SharedElements.getNewsImageTransitionName(args.news.newsId)
         // Set image
