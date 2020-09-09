@@ -8,7 +8,7 @@
         android:visible="false"
         tools:visible="true">
         <item
-            android:id="@+id/menu_news_details_details_delete"
+            android:id="@+id/menu_news_details_delete"
             android:icon="@drawable/ic_delete"
             android:title="@string/label_delete"
             app:showAsAction="ifRoom" />

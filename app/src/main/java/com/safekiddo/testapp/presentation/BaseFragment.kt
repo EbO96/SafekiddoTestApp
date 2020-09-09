@@ -29,4 +29,8 @@ abstract class BaseFragment(contentLayoutId: Int, menuResId: Int = 0) : Fragment
             findNavController().navigate(this)
         }
     }
+
+    fun back() {
+        findNavController().popBackStack()
+    }
 }

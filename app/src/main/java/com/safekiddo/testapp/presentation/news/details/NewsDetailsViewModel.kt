@@ -1,6 +1,7 @@
 package com.safekiddo.testapp.presentation.news.details
 
 import androidx.lifecycle.*
+import com.hadilq.liveevent.LiveEvent
 import com.safekiddo.testapp.data.NewsRepository
 import com.safekiddo.testapp.data.db.entity.News
 import com.safekiddo.testapp.presentation.BaseViewModel
@@ -9,11 +10,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class NewsDetailsViewModel(private val originalNews: NewsItem?, private val newsRepository: NewsRepository) : BaseViewModel() {
+class NewsDetailsViewModel(originalNews: NewsItem?, private val newsRepository: NewsRepository) : BaseViewModel() {
 
     private val createNews: Boolean = originalNews == null
 
-    private val _viewMode = MutableLiveData(getInitialMode())
+    private val _viewMode = MutableLiveData(getInitialMode(originalNews))
     val viewMode: LiveData<ViewMode>
         get() = _viewMode
 
@@ -23,7 +24,11 @@ class NewsDetailsViewModel(private val originalNews: NewsItem?, private val news
     val titleCharactersCount: LiveData<Int>
         get() = _titleCharactersCount
 
-    private val newsDetails: NewsDetails? get() = _viewMode.value?.newsDetails
+    private val _event = LiveEvent<Event>()
+    val event: LiveEvent<Event>
+        get() = _event
+
+    private val news: NewsDetails? get() = _viewMode.value?.newsDetails
 
     init {
         _titleCharactersCount.addSource(_viewMode) {
@@ -31,12 +36,11 @@ class NewsDetailsViewModel(private val originalNews: NewsItem?, private val news
         }
     }
 
-    private fun getInitialMode(): ViewMode {
-        val news = NewsDetails.Factory.create(originalNews)
+    private fun getInitialMode(originalNews: NewsItem?): ViewMode {
         return if (createNews) {
-            ViewMode.Edit(news)
+            ViewMode.Edit(null)
         } else {
-            ViewMode.Preview(news)
+            ViewMode.Preview(NewsDetails.Factory.create(originalNews))
         }
     }
 
@@ -47,17 +51,16 @@ class NewsDetailsViewModel(private val originalNews: NewsItem?, private val news
     private fun String?.charactersCount() = this?.length ?: 0
 
     fun editNews() {
-        _viewMode.value = ViewMode.Edit(newsDetails)
+        _viewMode.value = ViewMode.Edit(news)
     }
 
-    fun saveNews(imagePath: String? = originalNews?.imageUrl, title: String, description: String) {
-        // TODO image source class
-        val news = NewsDetails.Factory.create(originalNews?.newsId, imagePath, title, description)
+    fun saveNews(imagePath: String? = news?.image, title: String, description: String) {
+        val news = NewsDetails.Factory.create(news?.newsId, imagePath, title, description)
         val databaseNews = News.Factory.create(
-                title = title,
-                description = description,
-                id = originalNews?.newsId,
-                imageUrl = imagePath,
+                id = news.newsId,
+                title = news.title,
+                description = news.description,
+                imageUrl = news.image,
                 modificationDate = System.currentTimeMillis()
         )
 
@@ -66,16 +69,22 @@ class NewsDetailsViewModel(private val originalNews: NewsItem?, private val news
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     _viewMode.value = ViewMode.Preview(news)
+                    _event.value = Event.NewsSaved
                 }, {
-
+                    _event.value = Event.Error
                 })
                 .addToDisposables()
     }
 
     fun deleteNews() {
-        newsRepository.deleteById(originalNews?.newsId ?: return)
+        newsRepository.deleteById(news?.newsId ?: return)
                 .subscribeOn(Schedulers.io())
-                .subscribe()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    _event.value = Event.NewsDeleted
+                }, {
+                    _event.value = Event.Error
+                })
                 .addToDisposables()
     }
 
@@ -84,12 +93,18 @@ class NewsDetailsViewModel(private val originalNews: NewsItem?, private val news
         class Preview(news: NewsDetails?) : ViewMode(news)
     }
 
-    data class NewsDetails(val newsId: Long?, val image: String, val title: String, val description: String) {
+    sealed class Event {
+        object NewsDeleted : Event()
+        object NewsSaved : Event()
+        object Error : Event()
+    }
+
+    data class NewsDetails(val newsId: Long, val image: String, val title: String, val description: String) {
 
         object Factory {
             fun create(id: Long?, image: String?, title: String?, description: String?): NewsDetails {
                 return NewsDetails(
-                        newsId = id,
+                        newsId = id ?: News.Factory.generateId(),
                         image = image ?: "",
                         title = title ?: "",
                         description = description ?: ""
@@ -98,7 +113,7 @@ class NewsDetailsViewModel(private val originalNews: NewsItem?, private val news
 
             fun create(news: NewsItem?): NewsDetails {
                 return create(
-                        id = news?.newsId,
+                        id = news?.newsId ?: News.Factory.generateId(),
                         image = news?.imageUrl,
                         title = news?.title,
                         description = news?.description

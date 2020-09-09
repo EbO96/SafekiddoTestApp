@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipToPadding="false"
-    android:fillViewport="true">
+    android:clipToPadding="false">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/fragment_news_details_title_characters_count_text_view"
@@ -20,9 +19,6 @@
             android:padding="@dimen/padding_normal"
             android:textAlignment="textEnd"
             android:textColor="@color/brand_on_mint"
-            app:layout_constraintStart_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/format_title_characters_count" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -30,56 +26,39 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/news_image_height"
             android:scaleType="centerCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_news_details_title_characters_count_text_view"
             tools:src="@tools:sample/backgrounds/scenic" />
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <View
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:clickable="false"
-            android:focusable="false"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_news_details_image_image_view"
-            app:layout_constraintVertical_bias="0.0">
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray" />
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/fragment_news_details_title_edit_text"
+            style="@style/Widget.AppCompat.EditText.LikeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_title"
+            android:padding="@dimen/padding_normal"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            tools:maxLines="5"
+            tools:text="@tools:sample/lorem/random" />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/fragment_news_details_title_edit_text"
-                style="@style/Widget.AppCompat.EditText.LikeTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_title"
-                android:padding="@dimen/padding_normal"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                tools:maxLines="5"
-                tools:text="@tools:sample/lorem/random" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray" />
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/fragment_news_details_description_edit_text"
+            style="@style/Widget.AppCompat.EditText.LikeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_description"
+            android:padding="@dimen/padding_normal"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            tools:maxLines="25"
+            tools:text="@tools:sample/lorem/random" />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/fragment_news_details_description_edit_text"
-                style="@style/Widget.AppCompat.EditText.LikeTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_big"
-                android:hint="@string/hint_description"
-                android:padding="@dimen/padding_normal"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                tools:maxLines="25"
-                tools:text="@tools:sample/lorem/random" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</ScrollView>

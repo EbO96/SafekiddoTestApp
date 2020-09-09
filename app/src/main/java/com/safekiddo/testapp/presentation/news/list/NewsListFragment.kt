@@ -2,11 +2,11 @@ package com.safekiddo.testapp.presentation.news.list
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.navigation.fragment.FragmentNavigator
 import com.safekiddo.testapp.R
 import com.safekiddo.testapp.data.rest.LoadState
 import com.safekiddo.testapp.di.Di
+import com.safekiddo.testapp.functional.util.shortToast
 import com.safekiddo.testapp.presentation.BaseFragment
 import com.safekiddo.testapp.presentation.view.JustSpaceItemDivider
 import kotlinx.android.synthetic.main.fragment_news_list.*
@@ -84,7 +84,7 @@ class NewsListFragment : BaseFragment(R.layout.fragment_news_list), NewsListRecy
             is LoadState.Error.ErrorType.Unknown -> R.string.message_cannot_fetch_news
             LoadState.Error.ErrorType.NoInternetConnection -> R.string.message_no_internet
         }
-        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+        requireContext().shortToast(message)
     }
 
     object SharedElements {

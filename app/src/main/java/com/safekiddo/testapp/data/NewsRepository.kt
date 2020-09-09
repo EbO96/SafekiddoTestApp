@@ -16,7 +16,7 @@ class NewsRepository(private val newsRestService: NewsRestService, private val n
         return getCachedNews()
                 .flatMap {
                     if (refresh || it.isEmpty()) {
-                        getApiNews()
+                        getApiNews().onErrorReturnItem(it)
                     } else {
                         Observable.just(it)
                     }

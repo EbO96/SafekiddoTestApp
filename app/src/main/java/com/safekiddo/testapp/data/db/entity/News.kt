@@ -26,7 +26,7 @@ data class News(
 
     object Factory {
 
-        private fun generateId() = System.nanoTime()
+        fun generateId() = System.nanoTime()
 
         fun create(id: Long?, title: String, description: String, imageUrl: String?, modificationDate: Long): News {
             return News(

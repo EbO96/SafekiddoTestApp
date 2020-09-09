@@ -11,4 +11,11 @@
     <string name="format_title_characters_count">Liczba znaków w tytule: %d</string>
     <string name="hint_title">Tytuł</string>
     <string name="hint_description">Opis</string>
+    <string name="message_error">Błąd</string>
+    <string name="message_news_saved">Zapisano</string>
+    <string name="title_warning">Uwaga</string>
+    <string name="message_delete_news">Czy na pewno chcesz usunąć wiadomość?</string>
+    <string name="delete">Usuń</string>
+    <string name="cancel">Anuluj</string>
+    <string name="message_deleted">Usunięto</string>
 </resources>
