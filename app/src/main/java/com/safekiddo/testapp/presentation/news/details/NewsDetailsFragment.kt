@@ -14,7 +14,7 @@ import com.safekiddo.testapp.presentation.BaseFragment
 import com.safekiddo.testapp.presentation.news.list.NewsListFragment
 import kotlinx.android.synthetic.main.fragment_news_details.*
 
-class NewsDetailsFragment : BaseFragment(R.layout.fragment_news_details) {
+class NewsDetailsFragment : BaseFragment(contentLayoutId = R.layout.fragment_news_details, menuResId = R.menu.menu_news_details) {
 
     private val args by navArgs<NewsDetailsFragmentArgs>()
 

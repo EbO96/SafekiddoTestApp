@@ -14,7 +14,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setViews()
         setupUiWithNavigation()
+    }
+
+    private fun setViews() {
+        setSupportActionBar(activity_main_toolbar)
     }
 
     private fun findNavController(): NavController {

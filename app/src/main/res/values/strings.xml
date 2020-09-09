@@ -5,4 +5,7 @@
     <string name="message_cannot_fetch_news">Nie udało się pobrać wiadomości</string>
     <string name="message_no_internet">Sprawdź połączenie z internetem</string>
     <string name="news_details">Szczegóły</string>
+    <string name="label_edit">Edytuj</string>
+    <string name="label_delete">Usuń</string>
+    <string name="label_save">Zapisz</string>
 </resources>
