@@ -2,6 +2,7 @@ package com.safekiddo.testapp.presentation.news.details
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.android.material.textfield.TextInputEditText
 import com.safekiddo.testapp.R
 import com.safekiddo.testapp.data.model.ImageSource
 import com.safekiddo.testapp.di.Di
@@ -68,9 +70,13 @@ class NewsDetailsFragment : BaseFragment(contentLayoutId = R.layout.fragment_new
     }
 
     private fun setViews() {
-        layout_edit_news_title_edit_text.doAfterTextChanged {
-            viewModel.updateTitleCharactersCount(it?.toString())
-        }
+        // Listen for title characters count
+        updateTitleCharactersCount(title)
+        layout_edit_news_title_edit_text.doAfterTextChanged { updateTitleCharactersCount(it?.toString()) }
+    }
+
+    private fun updateTitleCharactersCount(title: String?) {
+        viewModel.updateTitleCharactersCount(title)
     }
 
     private fun setObservers() {

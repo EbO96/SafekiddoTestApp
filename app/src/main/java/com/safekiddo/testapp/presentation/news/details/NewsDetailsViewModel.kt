@@ -22,7 +22,7 @@ class NewsDetailsViewModel(originalNews: NewsItem?, private val newsRepository: 
 
     val isInEditMode: Boolean get() = _viewMode.value is ViewMode.Edit
 
-    private val _titleCharactersCount = MediatorLiveData<Int>()
+    private val _titleCharactersCount = MutableLiveData<Int>()
     val titleCharactersCount: LiveData<Int>
         get() = _titleCharactersCount
 
@@ -31,12 +31,6 @@ class NewsDetailsViewModel(originalNews: NewsItem?, private val newsRepository: 
         get() = _event
 
     private val news: NewsItem? get() = _viewMode.value?.newsDetails
-
-    init {
-        _titleCharactersCount.addSource(_viewMode) {
-            _titleCharactersCount.value = it.newsDetails?.title.charactersCount()
-        }
-    }
 
     private fun getInitialMode(originalNews: NewsItem?): ViewMode {
         return if (createNews) {
