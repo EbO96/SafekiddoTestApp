@@ -22,6 +22,15 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/fragment_news_list_empty_list_view"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/message_no_news"
+        android:textColor="@color/color_on_background" />
+
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fragment_news_list_create_news_button"
         android:layout_width="wrap_content"

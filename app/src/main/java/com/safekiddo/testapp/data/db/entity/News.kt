@@ -3,6 +3,7 @@ package com.safekiddo.testapp.data.db.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.safekiddo.testapp.data.model.ImageSource
 import com.safekiddo.testapp.data.rest.model.NewsApiResponse
 
 @Entity(tableName = "news")
@@ -17,8 +18,8 @@ data class News(
         @ColumnInfo(name = "description")
         val description: String,
 
-        @ColumnInfo(name = "image_url")
-        val imageUrl: String?,
+        @ColumnInfo(name = "image_source")
+        val imageSource: ImageSource?,
 
         @ColumnInfo(name = "modification_date")
         val modificationDate: Long
@@ -26,14 +27,14 @@ data class News(
 
     object Factory {
 
-        fun generateId() = System.nanoTime()
+        private fun generateId() = System.nanoTime()
 
-        fun create(id: Long?, title: String, description: String, imageUrl: String?, modificationDate: Long): News {
+        fun create(id: Long?, title: String, description: String, imageSource: ImageSource?, modificationDate: Long): News {
             return News(
                     id = id ?: generateId(),
                     title = title,
                     description = description,
-                    imageUrl = imageUrl,
+                    imageSource = imageSource,
                     modificationDate = modificationDate
             )
         }
@@ -43,7 +44,7 @@ data class News(
                     id = newsApiResponse.id ?: generateId(),
                     title = newsApiResponse.title ?: "",
                     description = newsApiResponse.description ?: "",
-                    imageUrl = newsApiResponse.imageUrl,
+                    imageSource = ImageSource.Factory.create(newsApiResponse.imageUrl),
                     modificationDate = modificationDate
             )
         }

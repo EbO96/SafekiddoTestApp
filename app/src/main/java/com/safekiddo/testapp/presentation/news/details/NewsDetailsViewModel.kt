@@ -4,6 +4,8 @@ import androidx.lifecycle.*
 import com.hadilq.liveevent.LiveEvent
 import com.safekiddo.testapp.data.NewsRepository
 import com.safekiddo.testapp.data.db.entity.News
+import com.safekiddo.testapp.data.mapper.DatabaseNewsToNewsItemMapper
+import com.safekiddo.testapp.data.model.ImageSource
 import com.safekiddo.testapp.presentation.BaseViewModel
 import com.safekiddo.testapp.presentation.news.list.NewsItem
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -28,7 +30,7 @@ class NewsDetailsViewModel(originalNews: NewsItem?, private val newsRepository: 
     val event: LiveEvent<Event>
         get() = _event
 
-    private val news: NewsDetails? get() = _viewMode.value?.newsDetails
+    private val news: NewsItem? get() = _viewMode.value?.newsDetails
 
     init {
         _titleCharactersCount.addSource(_viewMode) {
@@ -40,7 +42,7 @@ class NewsDetailsViewModel(originalNews: NewsItem?, private val newsRepository: 
         return if (createNews) {
             ViewMode.Edit(null)
         } else {
-            ViewMode.Preview(NewsDetails.Factory.create(originalNews))
+            ViewMode.Preview(originalNews)
         }
     }
 
@@ -54,13 +56,12 @@ class NewsDetailsViewModel(originalNews: NewsItem?, private val newsRepository: 
         _viewMode.value = ViewMode.Edit(news)
     }
 
-    fun saveNews(imagePath: String? = news?.image, title: String, description: String) {
-        val news = NewsDetails.Factory.create(news?.newsId, imagePath, title, description)
+    fun saveNews(imageSource: ImageSource?, title: String, description: String) {
         val databaseNews = News.Factory.create(
-                id = news.newsId,
-                title = news.title,
-                description = news.description,
-                imageUrl = news.image,
+                id = news?.newsId,
+                title = title,
+                description = description,
+                imageSource = imageSource,
                 modificationDate = System.currentTimeMillis()
         )
 
@@ -68,7 +69,7 @@ class NewsDetailsViewModel(originalNews: NewsItem?, private val newsRepository: 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    _viewMode.value = ViewMode.Preview(news)
+                    _viewMode.value = ViewMode.Preview(DatabaseNewsToNewsItemMapper.map(databaseNews))
                     _event.value = Event.NewsSaved
                 }, {
                     _event.value = Event.Error
@@ -88,38 +89,15 @@ class NewsDetailsViewModel(originalNews: NewsItem?, private val newsRepository: 
                 .addToDisposables()
     }
 
-    sealed class ViewMode(val newsDetails: NewsDetails?) {
-        class Edit(news: NewsDetails?) : ViewMode(news)
-        class Preview(news: NewsDetails?) : ViewMode(news)
+    sealed class ViewMode(val newsDetails: NewsItem?) {
+        class Edit(news: NewsItem?) : ViewMode(news)
+        class Preview(news: NewsItem?) : ViewMode(news)
     }
 
     sealed class Event {
         object NewsDeleted : Event()
         object NewsSaved : Event()
         object Error : Event()
-    }
-
-    data class NewsDetails(val newsId: Long, val image: String, val title: String, val description: String) {
-
-        object Factory {
-            fun create(id: Long?, image: String?, title: String?, description: String?): NewsDetails {
-                return NewsDetails(
-                        newsId = id ?: News.Factory.generateId(),
-                        image = image ?: "",
-                        title = title ?: "",
-                        description = description ?: ""
-                )
-            }
-
-            fun create(news: NewsItem?): NewsDetails {
-                return create(
-                        id = news?.newsId ?: News.Factory.generateId(),
-                        image = news?.imageUrl,
-                        title = news?.title,
-                        description = news?.description
-                )
-            }
-        }
     }
 
     class Factory @Inject constructor(private val news: NewsItem?, private val newsRepository: NewsRepository) : ViewModelProvider.Factory {

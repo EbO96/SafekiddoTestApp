@@ -24,17 +24,6 @@
         app:drawableTint="@color/color_on_background" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/dialog_change_news_photo_take_photo_button"
-        style="@style/TextAppearance.MaterialComponents.Subtitle1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_camera"
-        android:drawablePadding="@dimen/padding_normal"
-        android:padding="@dimen/padding_big"
-        android:text="@string/title_take_picture"
-        app:drawableTint="@color/color_on_background" />
-
-    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/dialog_change_news_photo_delete_button"
         style="@style/TextAppearance.MaterialComponents.Subtitle1"
         android:layout_width="match_parent"

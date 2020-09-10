@@ -82,4 +82,7 @@ dependencies {
 
     // KTX
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
+
+    // Others
+    implementation 'org.greenrobot:eventbus:3.2.0'
 }

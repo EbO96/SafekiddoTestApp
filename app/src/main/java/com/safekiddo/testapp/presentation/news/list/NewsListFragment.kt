@@ -2,9 +2,9 @@ package com.safekiddo.testapp.presentation.news.list
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.FragmentNavigator
 import com.safekiddo.testapp.R
-import com.safekiddo.testapp.data.rest.LoadState
 import com.safekiddo.testapp.di.Di
 import com.safekiddo.testapp.functional.util.shortToast
 import com.safekiddo.testapp.presentation.BaseFragment
@@ -35,7 +35,7 @@ class NewsListFragment : BaseFragment(R.layout.fragment_news_list), NewsListRecy
     }
 
     private fun setViews() {
-        fragment_news_list_swipe_refresh_layout.setOnRefreshListener(viewModel::load)
+        fragment_news_list_swipe_refresh_layout.setOnRefreshListener(viewModel::refresh)
 
         newsListRecyclerAdapter = NewsListRecyclerAdapter(this)
         fragment_news_list_recycler_view.apply {
@@ -72,19 +72,14 @@ class NewsListFragment : BaseFragment(R.layout.fragment_news_list), NewsListRecy
             fragment_news_list_swipe_refresh_layout.isRefreshing = it
         }
 
-        viewModel.error.observe(viewLifecycleOwner, ::showError)
+        viewModel.event.observe(viewLifecycleOwner) {
+            requireContext().shortToast(R.string.message_cannot_fetch_news)
+        }
 
         viewModel.newsList.observe(viewLifecycleOwner) {
+            fragment_news_list_empty_list_view.isVisible = it.isEmpty()
             newsListRecyclerAdapter.submitList(it)
         }
-    }
-
-    private fun showError(type: LoadState.Error.ErrorType) {
-        val message = when (type) {
-            is LoadState.Error.ErrorType.Unknown -> R.string.message_cannot_fetch_news
-            LoadState.Error.ErrorType.NoInternetConnection -> R.string.message_no_internet
-        }
-        requireContext().shortToast(message)
     }
 
     object SharedElements {

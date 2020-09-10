@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.safekiddo.testapp.data.db.converter.ImageSourceTypeConverter
 import com.safekiddo.testapp.data.db.dao.NewsDao
 import com.safekiddo.testapp.data.db.entity.News
 
@@ -14,6 +16,7 @@ import com.safekiddo.testapp.data.db.entity.News
         version = 1,
         exportSchema = false
 )
+@TypeConverters(ImageSourceTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract val newsDao: NewsDao

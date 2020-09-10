@@ -8,7 +8,7 @@ object DatabaseNewsToNewsItemMapper : ModelMapper<News, NewsItem>() {
     override fun map(input: News): NewsItem {
         return NewsItem(
                 newsId = input.id,
-                imageUrl = input.imageUrl,
+                imageSource = input.imageSource,
                 title = input.title,
                 description = input.description
         )

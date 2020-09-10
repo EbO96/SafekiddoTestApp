@@ -7,4 +7,8 @@ package com.safekiddo.testapp.data.mapper
 abstract class ModelMapper<I, O> {
 
     abstract fun map(input: I): O
+
+    fun map(input: List<I>): List<O> {
+        return input.map(::map)
+    }
 }

@@ -36,9 +36,10 @@ class NewsListRecyclerAdapter(private val listener: Listener) : ListAdapter<News
                         item_news_image_image_view.apply {
                             transitionName = NewsListFragment.SharedElements.getNewsImageTransitionName(news.newsId)
                             Glide.with(this)
-                                    .load(news.imageUrl)
+                                    .load(news.imageSource?.getImage())
                                     .placeholder(R.drawable.ic_image_placeholder)
                                     .error(R.drawable.ic_broken_image_placeholder)
+                                    .dontAnimate()
                                     .addListener(object : RequestListener<Drawable> {
                                         override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
                                             item_news_image_image_view.scaleType = ImageView.ScaleType.FIT_CENTER
