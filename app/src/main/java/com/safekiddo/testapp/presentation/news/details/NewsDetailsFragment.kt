@@ -16,6 +16,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.safekiddo.testapp.R
 import com.safekiddo.testapp.data.model.ImageSource
 import com.safekiddo.testapp.di.Di
+import com.safekiddo.testapp.functional.util.hideKeyboard
 import com.safekiddo.testapp.functional.util.shortToast
 import com.safekiddo.testapp.functional.util.textOrBlank
 import com.safekiddo.testapp.presentation.BaseFragment
@@ -41,12 +42,12 @@ class NewsDetailsFragment : BaseFragment(contentLayoutId = R.layout.fragment_new
         get() = field?.takeIf(String::isNotBlank)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
         Di.applicationComponent
                 .getNewsDetailsComponentFactory()
                 .create(args.news, this)
                 .inject(this)
         super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
 
         imageSource = savedInstanceState?.getParcelable(ARG_PHOTO_SOURCE) ?: args.news?.imageSource
         title = savedInstanceState?.getString(ARG_TITLE) ?: args.news?.title
@@ -67,7 +68,7 @@ class NewsDetailsFragment : BaseFragment(contentLayoutId = R.layout.fragment_new
     }
 
     private fun setViews() {
-        fragment_news_details_title_text_view.doAfterTextChanged {
+        layout_edit_news_title_edit_text.doAfterTextChanged {
             viewModel.updateTitleCharactersCount(it?.toString())
         }
     }
@@ -94,6 +95,7 @@ class NewsDetailsFragment : BaseFragment(contentLayoutId = R.layout.fragment_new
                 text = description
             }
 
+            // Editable fields
             layout_edit_news_title_edit_text.apply {
                 setText(title)
                 setSelection(title.length)
@@ -158,6 +160,8 @@ class NewsDetailsFragment : BaseFragment(contentLayoutId = R.layout.fragment_new
     }
 
     private fun saveNews() {
+        hideKeyboard()
+
         val title = layout_edit_news_title_edit_text.textOrBlank().also { this.title = it }
         val description = layout_edit_news_description_edit_text.textOrBlank().also { this.description = it }
 
