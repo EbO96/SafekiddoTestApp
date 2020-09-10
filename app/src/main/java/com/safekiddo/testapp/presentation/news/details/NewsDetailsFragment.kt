@@ -2,7 +2,6 @@ package com.safekiddo.testapp.presentation.news.details
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -13,8 +12,6 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.google.android.material.textfield.TextInputEditText
 import com.safekiddo.testapp.R
 import com.safekiddo.testapp.data.model.ImageSource
 import com.safekiddo.testapp.di.Di
@@ -37,12 +34,6 @@ class NewsDetailsFragment : BaseFragment(contentLayoutId = R.layout.fragment_new
     private val args by navArgs<NewsDetailsFragmentArgs>()
     private var menu: Menu? = null
 
-    private var imageSource: ImageSource? = null
-    private var title: String? = null
-        get() = field?.takeIf(String::isNotBlank)
-    private var description: String? = null
-        get() = field?.takeIf(String::isNotBlank)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         Di.applicationComponent
                 .getNewsDetailsComponentFactory()
@@ -50,17 +41,6 @@ class NewsDetailsFragment : BaseFragment(contentLayoutId = R.layout.fragment_new
                 .inject(this)
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
-
-        imageSource = savedInstanceState?.getParcelable(ARG_PHOTO_SOURCE) ?: args.news?.imageSource
-        title = savedInstanceState?.getString(ARG_TITLE) ?: args.news?.title
-        description = savedInstanceState?.getString(ARG_DESCRIPTION) ?: args.news?.description
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelable(ARG_PHOTO_SOURCE, imageSource)
-        outState.putString(ARG_TITLE, layout_edit_news_title_edit_text.textOrBlank())
-        outState.putString(ARG_DESCRIPTION, layout_edit_news_description_edit_text.textOrBlank())
-        super.onSaveInstanceState(outState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -70,8 +50,6 @@ class NewsDetailsFragment : BaseFragment(contentLayoutId = R.layout.fragment_new
     }
 
     private fun setViews() {
-        // Listen for title characters count
-        updateTitleCharactersCount(title)
         layout_edit_news_title_edit_text.doAfterTextChanged { updateTitleCharactersCount(it?.toString()) }
     }
 
@@ -80,36 +58,48 @@ class NewsDetailsFragment : BaseFragment(contentLayoutId = R.layout.fragment_new
     }
 
     private fun setObservers() {
-        viewModel.viewMode.observe(viewLifecycleOwner) { viewMode ->
-            val news = viewMode.newsDetails
-            setUi(viewMode)
-            //Set image
-            setImage(imageSource)
-            news ?: return@observe
-//            fragment_news_details_image_image_view.transitionName = NewsListFragment.SharedElements.getNewsImageTransitionName(news.newsId)
+        viewModel.imageSource.observe(viewLifecycleOwner) {
+            // fragment_news_details_image_image_view.transitionName = NewsListFragment.SharedElements.getNewsImageTransitionName(news.newsId)
+            Glide.with(this@NewsDetailsFragment)
+                    .load(it?.getImage())
+                    .error(R.drawable.ic_broken_image_placeholder)
+                    .placeholder(R.drawable.ic_image_placeholder)
+                    .into(fragment_news_details_image_image_view)
+        }
 
-            val title = this.title ?: news.title
-            val description = this.description ?: news.description
-
+        viewModel.title.observe(viewLifecycleOwner) {
             fragment_news_details_title_text_view.apply {
-                transitionName = NewsListFragment.SharedElements.getNewsTitleTransitionName(news.newsId)
-                text = title
-            }
-
-            fragment_news_details_description_text_view.apply {
-                transitionName = NewsListFragment.SharedElements.getNewsDescriptionTransitionName(news.newsId)
-                text = description
+                transitionName = NewsListFragment.SharedElements.getNewsTitleTransitionName(args.news?.newsId)
+                text = it
             }
 
             // Editable fields
             layout_edit_news_title_edit_text.apply {
-                setText(title)
-                setSelection(title.length)
+                setText(it)
+                setSelection(it?.length ?: 0)
             }
+        }
+
+        viewModel.description.observe(viewLifecycleOwner) {
+            fragment_news_details_description_text_view.apply {
+                transitionName = NewsListFragment.SharedElements.getNewsDescriptionTransitionName(args.news?.newsId)
+                text = it
+            }
+
             layout_edit_news_description_edit_text.apply {
-                setText(description)
-                setSelection(description.length)
+                setText(it)
+                setSelection(it?.length ?: 0)
             }
+        }
+
+        viewModel.uiMode.observe(viewLifecycleOwner) { viewMode ->
+            val isInEditMode = viewMode == NewsDetailsViewModel.UiMode.EDIT
+            fragment_news_details_text_preview_group.isVisible = !isInEditMode
+            fragment_news_details_edit_layout.isVisible = isInEditMode
+            setMenuItemsVisibility(
+                    menu = menu,
+                    isInEditMode = isInEditMode
+            )
         }
 
         viewModel.titleCharactersCount.observe(viewLifecycleOwner) {
@@ -128,21 +118,12 @@ class NewsDetailsFragment : BaseFragment(contentLayoutId = R.layout.fragment_new
         }
     }
 
-    private fun setUi(viewMode: NewsDetailsViewModel.ViewMode) {
-        val isInEditMode = viewMode is NewsDetailsViewModel.ViewMode.Edit
-        fragment_news_details_text_preview_group.isVisible = !isInEditMode
-        fragment_news_details_edit_layout.isVisible = isInEditMode
-        setMenuItemsVisibility(
-                menu = menu,
-                canDeleteNews = viewMode.newsDetails != null,
-                isInEditMode = isInEditMode
-        )
-    }
-
-    private fun setMenuItemsVisibility(menu: Menu?, canDeleteNews: Boolean, isInEditMode: Boolean) {
-        menu?.setGroupVisible(R.id.menu_news_details_edit_group, isInEditMode)
-        menu?.findItem(R.id.menu_news_details_edit)?.isVisible = !isInEditMode
-        menu?.findItem(R.id.menu_news_details_delete)?.isVisible = canDeleteNews
+    private fun setMenuItemsVisibility(menu: Menu?, isInEditMode: Boolean) {
+        menu?.apply {
+            setGroupVisible(R.id.menu_news_details_edit_group, isInEditMode)
+            findItem(R.id.menu_news_details_edit)?.isVisible = !isInEditMode
+            findItem(R.id.menu_news_details_delete)?.isVisible = isInEditMode && viewModel.newsId != null
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -150,7 +131,6 @@ class NewsDetailsFragment : BaseFragment(contentLayoutId = R.layout.fragment_new
         this.menu = menu
         setMenuItemsVisibility(
                 menu = menu,
-                canDeleteNews = args.news != null,
                 isInEditMode = viewModel.isInEditMode
         )
     }
@@ -165,17 +145,13 @@ class NewsDetailsFragment : BaseFragment(contentLayoutId = R.layout.fragment_new
         return super.onOptionsItemSelected(item)
     }
 
+    private fun getTitle() = layout_edit_news_title_edit_text.textOrBlank()
+
+    private fun getDescription() = layout_edit_news_description_edit_text.textOrBlank()
+
     private fun saveNews() {
         hideKeyboard()
-
-        val title = layout_edit_news_title_edit_text.textOrBlank().also { this.title = it }
-        val description = layout_edit_news_description_edit_text.textOrBlank().also { this.description = it }
-
-        viewModel.saveNews(
-                imageSource = imageSource,
-                title = title,
-                description = description
-        )
+        viewModel.saveNews(title = getTitle(), description = getDescription())
     }
 
     private fun deleteNews() {
@@ -197,7 +173,7 @@ class NewsDetailsFragment : BaseFragment(contentLayoutId = R.layout.fragment_new
         EventBus.getDefault().removeStickyEvent(event)
         when (event) {
             ChangeNewsPhotoDialog.Event.PickFromGallery -> pickPhotoFromGallery()
-            ChangeNewsPhotoDialog.Event.Delete -> setImage(null)
+            ChangeNewsPhotoDialog.Event.Delete -> viewModel.updateImageSource(null)
         }
     }
 
@@ -209,20 +185,10 @@ class NewsDetailsFragment : BaseFragment(contentLayoutId = R.layout.fragment_new
         startActivityForResult(intent, PICK_GALLERY_PHOTO_REQUEST_CODE)
     }
 
-    private fun setImage(imageSource: ImageSource?) {
-        this.imageSource = imageSource
-        Glide.with(this@NewsDetailsFragment)
-                .load(imageSource?.getImage())
-                .error(R.drawable.ic_broken_image_placeholder)
-                .placeholder(R.drawable.ic_image_placeholder)
-                .into(fragment_news_details_image_image_view)
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
-            PICK_GALLERY_PHOTO_REQUEST_CODE -> {
-                setImage(ImageSource.Factory.create(data?.data))
-            }
+            PICK_GALLERY_PHOTO_REQUEST_CODE -> viewModel.updateImageSource(ImageSource.Factory.create(data?.data
+                    ?: return))
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
@@ -232,16 +198,17 @@ class NewsDetailsFragment : BaseFragment(contentLayoutId = R.layout.fragment_new
         EventBus.getDefault().register(this)
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.saveUiState(title = getTitle(), description = getDescription())
+    }
+
     override fun onStop() {
         super.onStop()
         EventBus.getDefault().unregister(this)
     }
 
     companion object {
-        private const val ARG_PHOTO_SOURCE = "ARG_PHOTO_SOURCE"
-        private const val ARG_TITLE = "ARG_TITLE"
-        private const val ARG_DESCRIPTION = "ARG_DESCRIPTION"
-
         private const val PICK_GALLERY_PHOTO_REQUEST_CODE = 1
     }
 }
