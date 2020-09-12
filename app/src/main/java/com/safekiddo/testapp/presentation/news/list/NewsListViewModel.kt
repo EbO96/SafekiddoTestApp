@@ -6,20 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.hadilq.liveevent.LiveEvent
 import com.safekiddo.testapp.data.NewsRepository
-import com.safekiddo.testapp.data.db.entity.News
 import com.safekiddo.testapp.data.mapper.ApiResponseNewsToDatabaseNewsMapper
 import com.safekiddo.testapp.data.mapper.DatabaseNewsToNewsItemMapper
-import com.safekiddo.testapp.data.rest.model.NewsListApiResponse
 import com.safekiddo.testapp.presentation.BaseViewModel
-import io.reactivex.BackpressureStrategy
-import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
-import io.reactivex.subjects.ReplaySubject
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class NewsListViewModel(private val newsRepository: NewsRepository) : BaseViewModel() {

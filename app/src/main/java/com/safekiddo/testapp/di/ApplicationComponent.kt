@@ -1,7 +1,7 @@
 package com.safekiddo.testapp.di
 
 import android.app.Application
-import com.safekiddo.testapp.di.data.DataModule
+import com.safekiddo.testapp.di.data.DataSourceModule
 import com.safekiddo.testapp.di.data.db.DatabaseModule
 import com.safekiddo.testapp.di.data.rest.BaseRestModule
 import com.safekiddo.testapp.di.data.rest.NewsRestModule
@@ -15,7 +15,7 @@ import javax.inject.Singleton
 @Component(
         modules = [
             ApplicationModule::class,
-            DataModule::class,
+            DataSourceModule::class,
             DatabaseModule::class,
             BaseRestModule::class,
             NewsRestModule::class

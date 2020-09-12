@@ -10,8 +10,8 @@ import androidx.fragment.app.Fragment
 
 fun EditText.textOrBlank() = text?.toString() ?: ""
 
-fun Fragment.showShortToast(@StringRes message: Int) {
-    context?.apply { Toast.makeText(this, message, Toast.LENGTH_SHORT).show() }
+fun Fragment?.showShortToast(@StringRes message: Int) {
+    this?.context?.apply { Toast.makeText(this, message, Toast.LENGTH_SHORT).show() }
 }
 
 fun Fragment.hideKeyboard() {

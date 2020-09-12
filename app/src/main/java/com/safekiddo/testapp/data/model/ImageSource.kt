@@ -2,9 +2,17 @@ package com.safekiddo.testapp.data.model
 
 import android.net.Uri
 import android.os.Parcelable
+import com.safekiddo.testapp.data.model.ImageSource.Type
 import kotlinx.android.parcel.Parcelize
 import java.io.File
 
+/**
+ * This class stores information about image.
+ * Image can be loaded from Web URL, local file or Uri.
+ *
+ * @param path path to photo.
+ * @param type type of photo. Can be on of the predefined [Type]
+ */
 @Parcelize
 data class ImageSource(val path: String, val type: Type) : Parcelable {
 
