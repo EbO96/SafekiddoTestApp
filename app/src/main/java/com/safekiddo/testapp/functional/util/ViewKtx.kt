@@ -1,7 +1,6 @@
 package com.safekiddo.testapp.functional.util
 
 import android.app.Activity
-import android.content.Context
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
@@ -11,8 +10,8 @@ import androidx.fragment.app.Fragment
 
 fun EditText.textOrBlank() = text?.toString() ?: ""
 
-fun Context.shortToast(@StringRes message: Int) {
-    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+fun Fragment.showShortToast(@StringRes message: Int) {
+    context?.apply { Toast.makeText(this, message, Toast.LENGTH_SHORT).show() }
 }
 
 fun Fragment.hideKeyboard() {

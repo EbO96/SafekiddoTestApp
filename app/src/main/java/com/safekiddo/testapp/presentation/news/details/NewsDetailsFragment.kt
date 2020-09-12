@@ -16,7 +16,7 @@ import com.safekiddo.testapp.R
 import com.safekiddo.testapp.data.model.ImageSource
 import com.safekiddo.testapp.di.Di
 import com.safekiddo.testapp.functional.util.hideKeyboard
-import com.safekiddo.testapp.functional.util.shortToast
+import com.safekiddo.testapp.functional.util.showShortToast
 import com.safekiddo.testapp.functional.util.textOrBlank
 import com.safekiddo.testapp.presentation.BaseFragment
 import com.safekiddo.testapp.presentation.news.list.NewsListFragment
@@ -109,11 +109,11 @@ class NewsDetailsFragment : BaseFragment(contentLayoutId = R.layout.fragment_new
         viewModel.event.observe(viewLifecycleOwner) {
             when (it) {
                 NewsDetailsViewModel.Event.NewsDeleted -> {
-                    requireContext().shortToast(R.string.message_deleted)
+                    showShortToast(R.string.message_deleted)
                     back()
                 }
-                NewsDetailsViewModel.Event.Error -> requireContext().shortToast(R.string.message_error)
-                NewsDetailsViewModel.Event.NewsSaved -> requireContext().shortToast(R.string.message_news_saved)
+                NewsDetailsViewModel.Event.Error -> showShortToast(R.string.message_error)
+                NewsDetailsViewModel.Event.NewsSaved -> showShortToast(R.string.message_news_saved)
             }
         }
     }
