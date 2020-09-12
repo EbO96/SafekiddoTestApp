@@ -12,7 +12,6 @@ class NewsCacheInterceptor : Interceptor {
         val response = chain.proceed(chain.request())
 
         val cacheControl = CacheControl.Builder()
-                .noCache()
                 .maxAge(NewsRestService.MAX_CACHE_AGE_MS, TimeUnit.MILLISECONDS)
                 .build()
 
