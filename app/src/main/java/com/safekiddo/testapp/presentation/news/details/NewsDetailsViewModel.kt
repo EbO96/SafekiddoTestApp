@@ -28,9 +28,9 @@ class NewsDetailsViewModel(originalNews: NewsItem?, private val newsRepository: 
     val description: LiveData<String?>
         get() = _description
 
-    private val _titleCharactersCount = MutableLiveData<Int>()
-    val titleCharactersCount: LiveData<Int>
-        get() = _titleCharactersCount
+    private val _descriptionCharactersCount = MutableLiveData<Int>()
+    val descriptionCharactersCount: LiveData<Int>
+        get() = _descriptionCharactersCount
 
     private val _uiMode = savedStateHandle.getLiveData<UiMode>(ARG_UI_MODE)
     val uiMode: LiveData<UiMode>
@@ -75,8 +75,8 @@ class NewsDetailsViewModel(originalNews: NewsItem?, private val newsRepository: 
         }
     }
 
-    fun updateTitleCharactersCount(title: String?) {
-        _titleCharactersCount.value = title.charactersCount()
+    fun updateDescriptionCharactersCount(title: String?) {
+        _descriptionCharactersCount.value = title.charactersCount()
     }
 
     private fun String?.charactersCount() = this?.length ?: 0

@@ -61,18 +61,10 @@ class NewsListRecyclerAdapter(private val listener: Listener) : ListAdapter<News
                 text = news.title
             }
 
-            // Description
-            item_news_description_text_view.apply {
-                transitionName = NewsListFragment.SharedElements.getNewsDescriptionTransitionName(news.newsId)
-                isVisible = news.description.isNotBlank()
-                text = news.description
-            }
-
             setOnClickListener {
                 val extras = mapOf<View, String>(
                         item_news_image_image_view to NewsListFragment.SharedElements.getNewsImageTransitionName(news.newsId),
-                        item_news_title_text_view to NewsListFragment.SharedElements.getNewsTitleTransitionName(news.newsId),
-                        item_news_description_text_view to NewsListFragment.SharedElements.getNewsDescriptionTransitionName(news.newsId)
+                        item_news_title_text_view to NewsListFragment.SharedElements.getNewsTitleTransitionName(news.newsId)
                 )
                 listener.onItemClick(news, extras)
             }
