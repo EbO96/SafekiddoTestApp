@@ -50,11 +50,9 @@ class NewsDetailsFragment : BaseFragment(contentLayoutId = R.layout.fragment_new
     }
 
     private fun setViews() {
-        layout_edit_news_title_edit_text.doAfterTextChanged { updateTitleCharactersCount(it?.toString()) }
-    }
-
-    private fun updateTitleCharactersCount(title: String?) {
-        viewModel.updateTitleCharactersCount(title)
+        layout_edit_news_description_edit_text.doAfterTextChanged {
+            viewModel.updateDescriptionCharactersCount(it?.toString())
+        }
     }
 
     private fun setObservers() {
@@ -81,10 +79,7 @@ class NewsDetailsFragment : BaseFragment(contentLayoutId = R.layout.fragment_new
         }
 
         viewModel.description.observe(viewLifecycleOwner) {
-            fragment_news_details_description_text_view.apply {
-                transitionName = NewsListFragment.SharedElements.getNewsDescriptionTransitionName(args.news?.newsId)
-                text = it
-            }
+            fragment_news_details_description_text_view.text = it
 
             layout_edit_news_description_edit_text.apply {
                 setText(it)
@@ -102,7 +97,7 @@ class NewsDetailsFragment : BaseFragment(contentLayoutId = R.layout.fragment_new
             )
         }
 
-        viewModel.titleCharactersCount.observe(viewLifecycleOwner) {
+        viewModel.descriptionCharactersCount.observe(viewLifecycleOwner) {
             fragment_news_details_title_characters_count_text_view.text = getString(R.string.format_title_characters_count, it)
         }
 

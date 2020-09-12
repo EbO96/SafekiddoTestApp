@@ -8,7 +8,7 @@
     <string name="label_edit">Edytuj</string>
     <string name="label_delete">Usuń</string>
     <string name="label_save">Zapisz</string>
-    <string name="format_title_characters_count">Liczba znaków w tytule: %d</string>
+    <string name="format_title_characters_count">Liczba znaków w opisie: %d</string>
     <string name="hint_title">Tytuł</string>
     <string name="hint_description">Opis</string>
     <string name="message_error">Błąd</string>

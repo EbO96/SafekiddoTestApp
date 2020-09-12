@@ -89,7 +89,5 @@ class NewsListFragment : BaseFragment(R.layout.fragment_news_list), NewsListRecy
         fun getNewsImageTransitionName(newsId: Long?) = newsId?.let { "newsImage${it}" } ?: ""
 
         fun getNewsTitleTransitionName(newsId: Long?) = newsId?.let { "newsTitle${it}" } ?: ""
-
-        fun getNewsDescriptionTransitionName(newsId: Long?) = newsId?.let { "newsDescription${it}" } ?: ""
     }
 }
