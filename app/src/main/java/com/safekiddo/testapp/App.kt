@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.safekiddo.testapp
 
 import android.app.Application

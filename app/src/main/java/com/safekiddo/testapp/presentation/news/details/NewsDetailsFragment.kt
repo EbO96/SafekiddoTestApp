@@ -168,6 +168,7 @@ class NewsDetailsFragment : BaseFragment(contentLayoutId = R.layout.fragment_new
                 .show()
     }
 
+    @Suppress("unused")
     @Subscribe(sticky = true)
     fun onPickPhotoEvent(event: ChangeNewsPhotoDialog.Event) {
         EventBus.getDefault().removeStickyEvent(event)

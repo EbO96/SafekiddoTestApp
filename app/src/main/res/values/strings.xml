@@ -3,7 +3,6 @@
     <string name="news">Wiadomości</string>
     <string name="create_news">Nowa wiadomość</string>
     <string name="message_cannot_fetch_news">Nie udało się pobrać wiadomości</string>
-    <string name="message_no_internet">Sprawdź połączenie z internetem</string>
     <string name="news_details">Szczegóły</string>
     <string name="label_edit">Edytuj</string>
     <string name="label_delete">Usuń</string>
@@ -19,7 +18,6 @@
     <string name="cancel">Anuluj</string>
     <string name="message_deleted">Usunięto</string>
     <string name="title_from_gallery">Z galerii</string>
-    <string name="title_take_picture">Zrób zdjęcie</string>
     <string name="title_change_photo">Zmień zdjęcie</string>
     <string name="message_no_news">Brak wiadomości</string>
 </resources>
