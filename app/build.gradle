@@ -5,6 +5,14 @@ apply plugin: "kotlin-kapt"
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('\\key\\release.jks')
+            storePassword 'safekiddo2020'
+            keyAlias 'safekiddo'
+            keyPassword 'safekiddo2020'
+        }
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
