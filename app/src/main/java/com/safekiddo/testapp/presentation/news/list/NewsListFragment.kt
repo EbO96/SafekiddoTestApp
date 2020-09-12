@@ -1,7 +1,10 @@
 package com.safekiddo.testapp.presentation.news.list
 
+import android.content.res.Configuration
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.FragmentNavigator
 import com.safekiddo.testapp.R
@@ -13,7 +16,7 @@ import kotlinx.android.synthetic.main.fragment_news_list.*
 import javax.inject.Inject
 
 
-class NewsListFragment : BaseFragment(R.layout.fragment_news_list), NewsListRecyclerAdapter.Listener {
+class NewsListFragment : BaseFragment(contentLayoutId = R.layout.fragment_news_list, menuResId = R.menu.menu_news_list), NewsListRecyclerAdapter.Listener {
 
     @Inject
     lateinit var viewModel: NewsListViewModel
@@ -82,6 +85,22 @@ class NewsListFragment : BaseFragment(R.layout.fragment_news_list), NewsListRecy
         viewModel.newsList.observe(viewLifecycleOwner) {
             fragment_news_list_empty_list_view.isVisible = it.isEmpty()
             newsListRecyclerAdapter.submitList(it)
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_main_switch_theme -> switchTheme()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun switchTheme() {
+        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES ->
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            Configuration.UI_MODE_NIGHT_NO ->
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
     }
 

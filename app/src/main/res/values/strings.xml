@@ -20,4 +20,5 @@
     <string name="title_from_gallery">Z galerii</string>
     <string name="title_change_photo">Zmień zdjęcie</string>
     <string name="message_no_news">Brak wiadomości</string>
+    <string name="title_theme_mode">Tryb ciemny lub jasny</string>
 </resources>

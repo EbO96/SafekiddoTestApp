@@ -38,7 +38,7 @@
         android:layout_margin="16dp"
         android:text="@string/create_news"
         app:icon="@drawable/ic_add"
-        app:iconTint="@color/brand_on_mint"
+        app:iconTint="@color/brand_on_secondary"
         app:layout_anchor="@id/fragment_news_list_recycler_view"
         app:layout_anchorGravity="bottom|end"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />

@@ -24,7 +24,7 @@ class NewsRestModule {
 
     @Singleton
     @Provides
-    fun provideForceCacheInterceptor() = NewsForceCacheInterceptor()
+    fun provideForceCacheInterceptor(context: Context) = NewsForceCacheInterceptor(context)
 
     @NewsOkHttpClient
     @Singleton
