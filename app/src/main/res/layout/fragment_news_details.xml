@@ -65,7 +65,7 @@
             android:id="@+id/fragment_news_details_text_preview_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="fragment_news_details_title_text_view,fragment_news_details_description_text_view" />
+            app:constraint_referenced_ids="fragment_news_details_title_characters_count_text_view,fragment_news_details_title_text_view,fragment_news_details_description_text_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
