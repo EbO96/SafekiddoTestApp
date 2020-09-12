@@ -10,7 +10,7 @@ import io.reactivex.Single
 @Dao
 interface NewsDao : BaseDao<News> {
 
-    @Query("SELECT * FROM news ORDER BY id ASC, modification_date DESC")
+    @Query("SELECT * FROM news ORDER BY modification_date DESC, id ASC")
     fun observeAllRx(): Observable<List<News>>
 
     @Query("SELECT * FROM news WHERE id = :newsId")

@@ -11,5 +11,6 @@ interface NewsRestService {
 
     companion object {
         const val BASE_URL = "https://safekiddo.free.beeceptor.com/DBForCandidates/"
+        const val MAX_CACHE_AGE_MS = 1000 * 60 * 60 * 12 // 12h
     }
 }
